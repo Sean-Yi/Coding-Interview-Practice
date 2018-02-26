@@ -1,5 +1,7 @@
 package difficulty.medium;
 
+import entities.TreeNode;
+
 public class Validate_Binary_Search_Tree {
 
 	public static void main(String[] args) {
