@@ -19,13 +19,15 @@ public class Longest_Increasing_Path_in_a_Matrix {
 	}
 	
     public int longestIncreasingPath(int[][] matrix) {
-
+    	
+    	if(matrix.length == 0 || matrix[0].length == 0) return 0;
+    	
         int maxNum = 0;
-        
+        int[][] dp = new int[matrix.length][matrix[0].length];
         for(int i = 0; i < matrix.length; i++) {
             for(int j = 0; j < matrix[0].length; j++) {
-                
-                maxNum = Math.max(maxCount(matrix,  i,  j, Integer.MIN_VALUE, 1), maxNum);
+            	
+                maxNum = Math.max(maxCount(matrix,  dp, i,  j, Integer.MIN_VALUE), maxNum);
             }
         }
         
@@ -33,21 +35,27 @@ public class Longest_Increasing_Path_in_a_Matrix {
             
     }
     
-    public int maxCount(int[][] matrix, int i,  int j, int num, int count){
+    public int maxCount(int[][] matrix, int[][] dp, int i,  int j, int num){
         
         if(i < 0 || j < 0 | i >= matrix.length || j >= matrix[0].length){
-            return count-1;
+            return 0;
         }
         if(matrix[i][j] <= num) {
-            return count-1;
+            return 0;
         } 
         
-        int leftCount = maxCount(matrix,  i,  j-1, matrix[i][j], count+1);
-        int rightCount = maxCount(matrix,  i,  j+1, matrix[i][j], count +1);
-        int topCount = maxCount(matrix,  i-1,  j, matrix[i][j], count +1);
-        int botCount = maxCount(matrix,  i+1,  j, matrix[i][j], count + 1);
-
-        return Math.max( Math.max(leftCount, rightCount), Math.max(topCount, botCount));
+        if(dp[i][j] != 0) {
+        	return dp[i][j];
+        }
+        
+        int leftCount = maxCount(matrix,  dp, i,  j-1, matrix[i][j]);
+        int rightCount = maxCount(matrix,  dp, i,  j+1, matrix[i][j]);
+        int topCount = maxCount(matrix,  dp, i-1,  j, matrix[i][j]);
+        int botCount = maxCount(matrix,  dp, i+1,  j, matrix[i][j]);
+        int max = Math.max( Math.max(leftCount, rightCount), Math.max(topCount, botCount)) + 1;
+        
+        dp[i][j] = max;
+        return dp[i][j];
         
     }
 
