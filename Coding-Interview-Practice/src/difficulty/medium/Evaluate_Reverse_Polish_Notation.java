@@ -11,33 +11,30 @@ public class Evaluate_Reverse_Polish_Notation {
 	}
 	
     public int evalRPN(String[] tokens) {
-        Stack<Integer> stack = new Stack<>();
-        
-        for(int i = 0; i < tokens.length ; i ++) {
-        	String s =  tokens[i];
-        	if(Character.isDigit(s.charAt(0)) || s.length() > 1){
-                stack.push(Integer.valueOf(s));
-            } else {
-                int b = stack.pop();
-                int a = stack.pop();
-                int total = 0;
-                if(s.charAt(0) == '+'){
-                    total = a + b;
-                    stack.push(total);
-                } else if(s.charAt(0) == '*') {
-                    total = a * b;
-                    stack.push(total);
-                } else if(s.charAt(0) == '-') {
-                    total = a - b;
-                    stack.push(total);
-                } else {
-                    total = a / b;
-                    stack.push(total);
-                }   
-            }  
-        }
-        
-        return stack.pop();
+        int a,b;
+		Stack<Integer> S = new Stack<Integer>();
+		for (String s : tokens) {
+			if(s.equals("+")) {
+				S.add(S.pop()+S.pop());
+			}
+			else if(s.equals("/")) {
+				b = S.pop();
+				a = S.pop();
+				S.add(a / b);
+			}
+			else if(s.equals("*")) {
+				S.add(S.pop() * S.pop());
+			}
+			else if(s.equals("-")) {
+				b = S.pop();
+				a = S.pop();
+				S.add(a - b);
+			}
+			else {
+				S.add(Integer.parseInt(s));
+			}
+		}	
+		return S.pop();
     }
 
 }
