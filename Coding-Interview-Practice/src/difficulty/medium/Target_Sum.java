@@ -5,27 +5,28 @@ public class Target_Sum {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Target_Sum s = new Target_Sum();
-		s.findTargetSumWays(new int[] {1,1,1}, 3);
+		s.findTargetSumWays(new int[] {0,0,0,0,0,0,0,0,1}, 1);
 	}
 	
-    int count = 0;
-    
     public int findTargetSumWays(int[] nums, int S) {
-         findTargetSumWays(nums, S, 0, 0);
-        return count;
+    	int maxSum = 1000;
+
+    	int col = maxSum*2+1;
+    	int[][] dp = new int[nums.length][col];
+    	dp[0][maxSum - nums[0]] += 1;
+    	dp[0][maxSum + nums[0]] += 1;
+    	
+    	for(int i = 0; i < nums.length-1; i++) {
+    		for(int j = 0; j < col; j++) {
+    			if(dp[i][j] != 0) {
+    				dp[i+1][j - nums[i+1]] += dp[i][j] ;
+    				dp[i+1][j + nums[i+1]] += dp[i][j] ;
+    			}
+    		}
+    	}
+    	
+    	
+    	return (S > maxSum)? 0  : dp[nums.length-1][maxSum + S];	
     }
-    
-    public void findTargetSumWays(int[] nums, int S, int sum, int start) {
-        if(S == sum && nums.length == start) {
-            count++;
-           
-        } else if(start < nums.length){
-        	findTargetSumWays(nums, S, sum-nums[start], start+1);
-            findTargetSumWays(nums, S, sum+nums[start], start+1);
-        } else {
-        	
-        }
-     }
-        
 
 }
